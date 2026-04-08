@@ -1,0 +1,43 @@
+HTML
+<video id="bg-video" autoplay muted loop>
+    <source src:"bg.mp4" type="video/mp4"
+</video>
+
+CSS
+#bg-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.4;
+}
+
+JSCRIPT
+const songs = [
+    { title: "Consume", artist: "Chase Atlantic", src: "song1.mp3", cover: "cover1.jpg", video: "background1.mp4" },
+    { title: "Perfect", artist: "Ed Sheeran", src: "song2.mp3", cover: "cover2.jpg", video: "background2.mp4" },
+    { title: "Unconditionally", artist: "Katy Perry", src: "song3.mp3", cover: "cover3.jpg", video: "background3.mp4" },
+]
+
+const bgVideo = document.getElementById('bg-video')
+bgVideo.src = songs[index].video
+bgVideo.play()
+
+function togglePlay() {
+    isPlaying = !isPlaying
+    const playBtn = document.querySelector('.play-btn')
+    const bgVideo = document.getElementById('bg-video')
+
+    if (isPlaying) {
+        playBtn.textContent = '⏸'
+        audio.play()
+        bgVideo.play()    // ← video plays with music
+    } else {
+        playBtn.textContent = '▶'
+        audio.pause()
+        bgVideo.pause()   // ← video pauses with music
+    }
+}

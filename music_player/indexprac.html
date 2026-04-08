@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="styleprac.css">
+    </head>
+    <body>
+        <video id="bg-video" muted loop>
+        </video>
+        <div class="container">
+            <button class="back-btn" onclick="goBack()">←  Back</button>
+
+
+            <div class="now-playing">
+                <div class="song-header">
+                    <img id="cover-art" src="cover1.jpg" class="cover-thumb">
+                    <div>
+                        <p class="now-title">Consume</p>
+                        <p class="now-artist">Chase Atlantic</p>
+                    </div>
+                </div>
+
+                <div class="lyrics-container" id="lyrics-container"></div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+
+                <div class="time-row">
+                    <span id="current-time">0:00</span>
+                    <span id="total-time">0:00</span>
+                </div>
+
+                <div class="controls">
+                    <button class="ctrl-btn" onclick="prevSong()">⏮</button>
+                    <button class="play-btn" onclick="togglePlay()">▶</button>
+                    <button class="ctrl-btn" onclick="nextSong()">⏭</button>
+                </div>
+            </div>
+            <h1 class="playlist-title">Nick's Playlist</h1>
+            <div class="song-list">
+                <div class="song-item" onclick="selectSong(0)" onmouseenter="previewSong(0)" onmouseleave="stopPreview()">
+                    <img src="cover1.jpg" class="song-thumb">
+                    <div>
+                        <p class="song-name">Consume</p>
+                        <p class="song-artist">Chase Atlantic</p>
+                    </div>
+                </div>
+                <div class="song-item" onclick="selectSong(1)" onmouseenter="previewSong(1)" onmouseleave="stopPreview()">
+                    <img src="cover2.jpg" class="song-thumb">
+                    <div>
+                        <p class="song-name">Perfect</p>
+                        <p class="song-artist">Ed Sheeran</p>
+                    </div>
+                </div>
+                <div class="song-item" onclick="selectSong(2)" onmouseenter="previewSong(2)" onmouseleave="stopPreview()">
+                    <img src="cover3.jpg" class="song-thumb">
+                    <div>
+                        <p class="song-name">Unconditionally</p>
+                        <p class="song-artist">Katy Perry</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="scriptprac.js"></script>
+</html>

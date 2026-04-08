@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Music Player</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="container">
+
+            <div class="now-playing">
+                <h1>My Music Player</h1>
+                <p class="now-title">Consume</p>
+                <p class="now-artist">Chase Atlantic</p>
+
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+
+                <div class="time-row">
+                    <span>0:35</span>
+                    <span>3:48</span>
+                </div>
+
+                <div class="controls">
+                    <button class="ctrl-btn" onclick="prevSong()">⏮</button>
+                    <button class="play-btn" onclick="togglePlay()">▶</button>
+                    <button class="ctrl-btn" onclick="nextSong()">⏭</button>
+                </div>
+            </div>
+
+            <div class="song-list">
+                <div class="song-item" onclick="selectSong(0)">
+                    <p class="song-name">Consume</p>
+                    <p class="song-artist">Chase Atlantic</p>
+                </div>
+                <div class="song-item"onclick="selectSong(1)">
+                    <p class="song-name">Perfect</p>
+                    <p class="song-artist">Ed Sheeran</p>
+                </div>
+                <div class="song-item"onclick="selectSong(2)">
+                    <p class="song-name">Unconditionally</p>
+                    <p class="song-artist">Katy Perry</p>
+                </div>
+            </div>
+
+        </div>
+    </body>
+    <script src="script.js"></script>
+</html>
