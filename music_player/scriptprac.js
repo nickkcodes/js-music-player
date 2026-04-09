@@ -25,8 +25,34 @@ const songs = [
      ]
     
     },
-    { title: "Perfect", artist: "Ed Sheeran", src: "song2.mp3", cover: "cover2.jpg", video: "background2.mp4", audiostart: 0},
-    { title: "Unconditionally", artist: "Katy Perry", src: "song3.mp3", cover: "cover3.jpg", video: "background3.mp4", audiostart: 0},
+    { title: "Perfect", artist: "Ed Sheeran", src: "song2.mp3", cover: "cover2.jpg",
+     video: "background2.mp4", audiostart: 194,
+    lyrics: [
+        { time: 194, line: "~ ~ ~" },
+        { time: 200, line: "No, no, no" },
+        { time: 203.5, line: "Mm, oh" },
+        { time: 207, line: "Baby, I'm dancin' in the dark with you between my arms"},
+        { time: 218, line: "Barefoot on the grass, listening to our favorite song"},
+        { time: 225, line: "I have faith in what I see, now I know I have met"},
+        { time: 231, line: "An angel in person, and she looks perfect"},
+        { time: 238, line: "I don't deserve this, you look perfect tonight" },
+    ]},
+    { title: "Unconditionally", artist: "Katy Perry", src: "song3.mp3", cover: "cover3.jpg",
+     video: "background3.mp4", audiostart: 146,
+     lyrics: [
+        { time: 146, line: "Acceptance is the key to be"},
+        { time: 151, line: "To be truly free"},
+        { time: 153.5, line: "Will you do the same for me?"},
+        { time: 162, line: "Unconditional, unconditionally"},
+        { time: 170, line: "I will love you unconditionally"},
+        { time: 177, line: "There is no fear now"},
+        { time: 181, line: "Let go and just be free"},
+        { time: 185, line: "Cause I will love you unconditionally"},
+        { time: 191, line: "oh, yeah"},
+        { time: 200, line: "I will love you (unconditionally)" },
+        { time: 207, line: "I will love you"},
+        { time: 215, line: "I will love you unconditionally" },
+     ]},
 ]
 
 const audio = new Audio(songs[0].src)
