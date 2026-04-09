@@ -36,6 +36,7 @@ const songs = [
         { time: 225, line: "I have faith in what I see, now I know I have met"},
         { time: 231, line: "An angel in person, and she looks perfect"},
         { time: 238, line: "I don't deserve this, you look perfect tonight" },
+
     ]},
     { title: "Unconditionally", artist: "Katy Perry", src: "song3.mp3", cover: "cover3.jpg",
      video: "background3.mp4", audiostart: 146,
@@ -53,6 +54,29 @@ const songs = [
         { time: 207, line: "I will love you"},
         { time: 215, line: "I will love you unconditionally" },
      ]},
+     
+     { title: "Kalapastangan", artist: "Fitterkarma", src: "song4.mp3", cover: "cover4.jpg",
+     video: "background4.mp4", audiostart: 119,
+     lyrics: [
+        { time: 129, line: "Oh, ang langit ay nandito lamang pala sa lupa" },
+        { time: 138, line: "At ang impiyerno ay nasa isipan ko, at pinalimot ng 'Yong ganda" },
+        { time: 147, line: "Umaawit ang mga anghel, umaawit ang mga anghel" },
+        { time: 156, line: "Nagdiriwang sila nang makasama Kita, huwag Ka sanang mawawala"},
+        { time: 165, line: "Oh, oh, oh, oh"},
+        { time: 171.5, line: "Oh, ooh"},
+        { time: 183, line: "Mamamatay akong nakangiti"},
+        { time: 187, line: "Kapag Ikaw ang nasa aking tabi"},
+        { time: 192, line: "Mabubuhay akong nagsisisi"},
+        { time: 196, line: "Kapag 'sang araw hindi Kita mapangiti"},
+        { time: 200.5, line: "Kalapastangan ang 'di Ka ibigin"},
+        { time: 205, line: "Kalokohan ang 'di Ka isipin"},
+        { time: 209, line: "Kung ang mundo ay biglang gugunawin"},
+        { time: 213.5, line: "Ikaw ang una kong hahanapin" },
+        { time: 219, line: "Ooh"},
+        { time: 228, line: "Ooh"}
+
+     ]
+      }
 ]
 
 const audio = new Audio(songs[0].src)
