@@ -1,0 +1,202 @@
+// ===== SKILLS GLOBE =====
+const skillsCanvas = document.getElementById('skillsCanvas');
+const sCtx = skillsCanvas.getContext('2d');
+
+const skills = [
+  { name: 'Python',     color: '#3572A5', icon: '🐍' },
+  { name: 'JavaScript', color: '#f7df1e', icon: '⚡' },
+  { name: 'HTML5',      color: '#e34c26', icon: '🌐' },
+  { name: 'CSS3',       color: '#1572b6', icon: '🎨' },
+  { name: 'React',      color: '#61DAFB', icon: '⚛' },
+  { name: 'Node.js',    color: '#68A063', icon: '🟢' },
+  { name: 'Git',        color: '#f05032', icon: '🔀' },
+  { name: 'VS Code',    color: '#007acc', icon: '💻' },
+  { name: 'Figma',      color: '#a259ff', icon: '🎭' },
+  { name: 'MySQL',      color: '#00758f', icon: '🗄' },
+  { name: 'C++',        color: '#f34b7d', icon: '⚙' },
+  { name: 'TypeScript', color: '#3178c6', icon: '📘' },
+  { name: 'Linux',      color: '#fcc624', icon: '🐧' },
+  { name: 'REST APIs',  color: '#7F77DD', icon: '🔌' },
+];
+
+let sW, sH, sCx, sCy, sR;
+
+function sResize() {
+  const wrap = skillsCanvas.parentElement;
+  sW = skillsCanvas.width = wrap.clientWidth;
+  sH = skillsCanvas.height = wrap.clientHeight;
+  sCx = sW / 2; sCy = sH / 2;
+  sR = Math.min(sW, sH) * 0.28;
+}
+sResize();
+window.addEventListener('resize', sResize);
+
+const sPts = skills.map((s, i) => {
+  const phi = Math.acos(-1 + (2 * i) / skills.length);
+  const theta = Math.sqrt(skills.length * Math.PI) * phi;
+  return {
+    x: Math.sin(phi) * Math.cos(theta),
+    y: Math.sin(phi) * Math.sin(theta),
+    z: Math.cos(phi),
+    skill: s
+  };
+});
+
+let sRotX = 0.3, sRotY = 0;
+let sVelX = 0, sVelY = 0;
+let sDragging = false;
+let sLastMX = 0, sLastMY = 0;
+let sAutoRotate = true;
+
+function sRotatePoint(p) {
+  let { x, y, z } = p;
+  let y2 = y * Math.cos(sRotX) - z * Math.sin(sRotX);
+  let z2 = y * Math.sin(sRotX) + z * Math.cos(sRotX);
+  let x2 = x * Math.cos(sRotY) + z2 * Math.sin(sRotY);
+  let z3 = -x * Math.sin(sRotY) + z2 * Math.cos(sRotY);
+  return { x: x2, y: y2, z: z3 };
+}
+
+function sGetScreenPos(p) {
+  const r = sRotatePoint(p);
+  const perspective = 2.4;
+  const scale = perspective / (perspective + r.z + 1);
+  return {
+    sx: sCx + r.x * sR * scale,
+    sy: sCy + r.y * sR * scale,
+    depth: r.z,
+    scale
+  };
+}
+
+function drawSkillsGlobe() {
+  sCtx.clearRect(0, 0, sW, sH);
+
+  const latLines = 9, lonLines = 14;
+  sCtx.strokeStyle = 'rgba(127,119,221,0.13)';
+  sCtx.lineWidth = 0.7;
+
+  for (let i = 0; i < latLines; i++) {
+    const phi = (Math.PI / latLines) * i;
+    sCtx.beginPath();
+    for (let j = 0; j <= 80; j++) {
+      const theta = (2 * Math.PI / 80) * j;
+      const raw = { x: Math.sin(phi) * Math.cos(theta), y: Math.cos(phi), z: Math.sin(phi) * Math.sin(theta) };
+      const { sx, sy } = sGetScreenPos(raw);
+      j === 0 ? sCtx.moveTo(sx, sy) : sCtx.lineTo(sx, sy);
+    }
+    sCtx.stroke();
+  }
+
+  for (let i = 0; i < lonLines; i++) {
+    const theta = (2 * Math.PI / lonLines) * i;
+    sCtx.beginPath();
+    for (let j = 0; j <= 80; j++) {
+      const phi = (Math.PI / 80) * j;
+      const raw = { x: Math.sin(phi) * Math.cos(theta), y: Math.cos(phi), z: Math.sin(phi) * Math.sin(theta) };
+      const { sx, sy } = sGetScreenPos(raw);
+      j === 0 ? sCtx.moveTo(sx, sy) : sCtx.lineTo(sx, sy);
+    }
+    sCtx.stroke();
+  }
+
+  const grd = sCtx.createRadialGradient(sCx, sCy, sR * 0.3, sCx, sCy, sR * 1.05);
+  grd.addColorStop(0, 'rgba(127,119,221,0.06)');
+  grd.addColorStop(0.6, 'rgba(50,40,100,0.10)');
+  grd.addColorStop(1, 'rgba(127,119,221,0.18)');
+  sCtx.beginPath();
+  sCtx.arc(sCx, sCy, sR, 0, Math.PI * 2);
+  sCtx.fillStyle = grd;
+  sCtx.fill();
+
+  const rendered = sPts.map(p => ({ ...sGetScreenPos(p), skill: p.skill }));
+  rendered.sort((a, b) => a.depth - b.depth);
+
+  for (const item of rendered) {
+    const { sx, sy, depth, skill, scale } = item;
+    const visible = depth > -0.85;
+    const alpha = visible ? Math.max(0.15, (depth + 1.2) / 2.1) : 0.07;
+    const sz = Math.max(8, scale * 36);
+
+    sCtx.beginPath();
+    sCtx.arc(sx, sy, sz * 0.22, 0, Math.PI * 2);
+    sCtx.fillStyle = skill.color + Math.round(alpha * 255).toString(16).padStart(2, '0');
+    sCtx.fill();
+
+    if (visible) {
+      sCtx.save();
+      sCtx.globalAlpha = alpha * 0.95;
+      sCtx.font = `${Math.max(10, sz * 0.85)}px serif`;
+      sCtx.textAlign = 'center';
+      sCtx.textBaseline = 'middle';
+      sCtx.fillText(skill.icon, sx, sy - sz * 0.9);
+      sCtx.restore();
+
+      const fontSize = Math.max(9, sz * 0.42);
+      sCtx.save();
+      sCtx.globalAlpha = alpha;
+      sCtx.font = `600 ${fontSize}px 'Segoe UI', sans-serif`;
+      sCtx.textAlign = 'center';
+      sCtx.textBaseline = 'top';
+      sCtx.fillStyle = depth > 0.1 ? '#ffffff' : '#aaa8cc';
+      sCtx.fillText(skill.name, sx, sy + sz * 0.16);
+      sCtx.restore();
+    }
+  }
+}
+
+function skillsLoop() {
+  if (!sDragging && sAutoRotate) {
+    sRotY += 0.004;
+    sRotX += 0.0008;
+  } else if (!sDragging) {
+    sRotY += sVelY * 0.92;
+    sRotX += sVelX * 0.92;
+    sVelY *= 0.92;
+    sVelX *= 0.92;
+  }
+  drawSkillsGlobe();
+  requestAnimationFrame(skillsLoop);
+}
+
+skillsLoop();
+
+function sGetXY(e) {
+  const rect = skillsCanvas.getBoundingClientRect();
+  const src = e.touches ? e.touches[0] : e;
+  return { mx: src.clientX - rect.left, my: src.clientY - rect.top };
+}
+
+skillsCanvas.addEventListener('mousedown', e => {
+  sDragging = true; sAutoRotate = false;
+  const { mx, my } = sGetXY(e);
+  sLastMX = mx; sLastMY = my;
+  sVelX = sVelY = 0;
+});
+skillsCanvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  sDragging = true; sAutoRotate = false;
+  const { mx, my } = sGetXY(e);
+  sLastMX = mx; sLastMY = my;
+  sVelX = sVelY = 0;
+}, { passive: false });
+
+function sOnMove(e) {
+  if (!sDragging) return;
+  const { mx, my } = sGetXY(e);
+  sVelY = (mx - sLastMX) * 0.008;
+  sVelX = (my - sLastMY) * 0.008;
+  sRotY += sVelY;
+  sRotX += sVelX;
+  sLastMX = mx; sLastMY = my;
+}
+skillsCanvas.addEventListener('mousemove', sOnMove);
+skillsCanvas.addEventListener('touchmove', e => { e.preventDefault(); sOnMove(e); }, { passive: false });
+
+function sOnUp() {
+  sDragging = false;
+  setTimeout(() => { if (!sDragging) sAutoRotate = true; }, 2000);
+}
+skillsCanvas.addEventListener('mouseup', sOnUp);
+skillsCanvas.addEventListener('touchend', sOnUp);
+window.addEventListener('mouseup', sOnUp);
